@@ -1,9 +1,12 @@
 package com.care.dbBasic;
 
+import java.util.ArrayList;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 @Service
 public class MemberService {
@@ -67,10 +70,9 @@ public class MemberService {
 		memberDao.update(member);
 		return "회원 정보가 수정되었습니다.";
 	}
-	
+
 	public String delete(String pw, String confirmPw) {
-		
-		if(pw == null || pw.isEmpty()){
+		if(pw == null || pw.isEmpty()) {
 			return "비밀번호를 입력하세요.";
 		}
 		
@@ -80,15 +82,38 @@ public class MemberService {
 		
 		String sessionId = (String)session.getAttribute("id");
 		MemberDTO check = memberDao.selectId(sessionId);
-		
-		if(pw.equals(check.getPw())){
+		if(check.getPw().equals(pw)) {
 			memberDao.delete(sessionId);
 			return "회원 정보가 삭제되었습니다.";
 		}
-		return "비밀번호가 잘 못 되었습니다.";
+		
+		return "비밀번호를 다시 입력하세요";
 	}
+
+	public void list(String cp, String search, String select, Model model) {
+		if(select == null){
+			select = "";
+		}
+		
+		int currentPage = 1;
+		try{
+			currentPage = Integer.parseInt(cp);
+		}catch(Exception e){
+			currentPage = 1;
+		}
+		
+		int pageBlock = 3; // 한 페이지에 보일 데이터의 수 
+		int end = pageBlock * currentPage; // 테이블에서 가져올 마지막 행번호
+		int begin = end - pageBlock + 1; // 테이블에서 가져올 시작 행번호
 	
-	
+		ArrayList<MemberDTO> members = memberDao.selectAll(begin, end, select, search);
+		int totalCount = memberDao.count(select, search);
+		String url = "list?select="+select+"&search="+search+"&currentPage=";
+		String result = PageService.printPage(url, currentPage, totalCount, pageBlock);
+		
+		model.addAttribute("members", members);
+		model.addAttribute("result", result);
+	}
 }
 
 
