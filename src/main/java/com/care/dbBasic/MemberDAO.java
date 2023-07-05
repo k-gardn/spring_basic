@@ -60,15 +60,15 @@ public class MemberDAO {
 			e.printStackTrace();
 		}
 	}
-	public void update(String id, String pw, String name, String email) {
+	public void update(MemberDTO member) {
 		String sql = "UPDATE session_exam SET pw=?, name=?, email=? WHERE id=?";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement(sql);
-			ps.setString(4, id);
-			ps.setString(1, pw);
-			ps.setString(2, name);
-			ps.setString(3, email);
+			ps.setString(4, member.getId());
+			ps.setString(1, member.getPw());
+			ps.setString(2, member.getName());
+			ps.setString(3, member.getEmail());
 			ps.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();

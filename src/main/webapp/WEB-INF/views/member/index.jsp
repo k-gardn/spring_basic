@@ -6,7 +6,8 @@
 <meta charset="UTF-8">
 <title>index</title>
 <style>
-a{ text-decoration: none; coloer:red}
+	a{ text-decoration: none; coloer:red}
+	h4{coloer:red}
 </style>
 </head>
 <body>
