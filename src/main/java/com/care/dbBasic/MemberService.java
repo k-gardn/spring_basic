@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import com.care.dbBasic.dao.MemberDAO;
+import com.care.dbBasic.dao.MemberMapper;
+
 @Service
 public class MemberService {
-	@Autowired	private MemberDAO memberDao;
+	
+	@Autowired	private MemberMapper memberDao;
 	@Autowired	private HttpSession session;
 	
 	public String login(MemberDTO member) {

@@ -1,4 +1,4 @@
-package com.care.dbBasic;
+package com.care.dbBasic.dao;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,7 +9,8 @@ import java.util.ArrayList;
 
 import org.springframework.stereotype.Repository;
 
-@Repository
+import com.care.dbBasic.MemberDTO;
+
 public class MemberDAO {
 	private Connection con;
 	

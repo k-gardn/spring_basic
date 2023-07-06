@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
+	xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+	xsi:schemaLocation="http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-1.2.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- // Connection Pool 설정 -->
+	<bean class="com.zaxxer.hikari.HikariConfig" id="hikariConfig">
+		<property name="driverClassName" value="oracle.jdbc.OracleDriver" /> 
+		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:xe" /> 
+		<property name="username" value="oracle" /> 
+		<property name="password" value="oracle" /> 
 		
+	</bean>
+	
+	<bean class="com.zaxxer.hikari.HikariDataSource" id="dataSource">
+		<constructor-arg ref="hikariConfig" /> 
+	</bean>
+	<!-- ConnectionPoll 설정 //-->
+	
+	<!--// Mybatis 설정 -->
+	<bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" /> 
+		<property name="mapperLocations" value="classpath:/mappers/*Mapper.xml" /> 
+		<!-- mybatis에서 사용할 설정 파일의 위치 설정
+			src/main/resources/mappers/*Mapper.xml 
+			xml파일의 맨 뒤가 Mapper.xml로 끝나면 됨. 
+			ex) testMapper.xml 	
+		-->
+	</bean>
+	<!-- Mybatis 설정 //-->
+	
+	<!--// Mybatic-Spring 설정 (Namespace를 지정해놔야 쓸 수 있다.) -->
+	<mybatis-spring:scan base-package="com.care.dbBasic.dao"/>
+	<!--// Mybatic-Spring 설정 -->
+	
 </beans>
